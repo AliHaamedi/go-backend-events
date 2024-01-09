@@ -19,7 +19,11 @@ func main() {
 }
 
 func getEvents(ctx *gin.Context) {
-	events := models.GetAllEvents()
+	events, err := models.GetAllEvents()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not fetch events"})
+		return
+	}
 	ctx.JSON(http.StatusOK, gin.H{"message": "hello world!", "data": events})
 }
 
@@ -31,8 +35,13 @@ func createEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "all fields are required"})
 		return
 	}
-	event.ID = 1
 	event.UserId = 1
-	event.Save()
+	eventId, err := event.Save()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not crate event"})
+		return
+	}
+	event.ID = eventId
+
 	ctx.JSON(http.StatusCreated, gin.H{"message": "event was created successfully", "data": event})
 }
