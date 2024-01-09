@@ -10,4 +10,5 @@ func RegisterRoute(server *gin.Engine) {
 	server.POST("/events", controllers.CreateEvent)
 	server.GET("/events/:id", controllers.GetEvent)
 	server.PUT("/events/:id", controllers.UpdateEvent)
+	server.DELETE("/events/:id", controllers.DeleteEvent)
 }
