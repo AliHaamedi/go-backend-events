@@ -3,11 +3,13 @@ package main
 import (
 	"net/http"
 
+	"github.com/alihaamedi/go-backend-events/db"
 	"github.com/alihaamedi/go-backend-events/models"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	db.InitDB()
 	server := gin.Default()
 
 	server.GET("/events", getEvents)    // localhost:8080/events
