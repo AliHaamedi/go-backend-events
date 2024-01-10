@@ -27,7 +27,7 @@ func CreateEvent(ctx *gin.Context) {
 	}
 
 	userId := ctx.GetInt64("userId")
-	event.UserId = userId
+	event.UserID = userId
 	err = event.Save()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not crate event"})
@@ -58,11 +58,19 @@ func UpdateEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "could not parse event id"})
 		return
 	}
-	_, err = models.GetEventById(eventId)
+
+	userId := ctx.GetInt64("userId")
+	event, err := models.GetEventById(eventId)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "event could not be found"})
 		return
 	}
+
+	if event.UserID != userId {
+		ctx.JSON(http.StatusForbidden, gin.H{"message": "not authorized to update event"})
+		return
+	}
+
 	var updatedEvent models.Event
 
 	err = ctx.ShouldBindJSON(&updatedEvent)
@@ -85,11 +93,19 @@ func DeleteEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "could not parse event id"})
 		return
 	}
+
+	userId := ctx.GetInt64("userId")
 	event, err := models.GetEventById(eventId)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "event could not be found"})
 		return
 	}
+
+	if event.UserID != userId {
+		ctx.JSON(http.StatusForbidden, gin.H{"message": "not authorized to delete event"})
+		return
+	}
+
 	err = event.Delete()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not delete event"})
