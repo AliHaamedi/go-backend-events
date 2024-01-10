@@ -26,7 +26,7 @@ func CreateEvent(ctx *gin.Context) {
 		return
 	}
 
-	err := utility.VerifyToken(token)
+	userId, err := utility.VerifyToken(token)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "not authorized"})
 		return
@@ -39,7 +39,7 @@ func CreateEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "all fields are required"})
 		return
 	}
-	event.UserId = 1
+	event.UserId = userId
 	err = event.Save()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not crate event"})
