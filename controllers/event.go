@@ -26,12 +26,11 @@ func CreateEvent(ctx *gin.Context) {
 		return
 	}
 	event.UserId = 1
-	eventId, err := event.Save()
+	err = event.Save()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "could not crate event"})
 		return
 	}
-	event.ID = eventId
 
 	ctx.JSON(http.StatusCreated, gin.H{"message": "event was created successfully", "data": event})
 }
