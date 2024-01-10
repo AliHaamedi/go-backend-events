@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/alihaamedi/go-backend-events/models"
+	"github.com/alihaamedi/go-backend-events/utility"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,8 +19,21 @@ func GetEvents(ctx *gin.Context) {
 }
 
 func CreateEvent(ctx *gin.Context) {
+	token := ctx.Request.Header.Get("Authorization")
+
+	if token == "" {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "not authorized"})
+		return
+	}
+
+	err := utility.VerifyToken(token)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "not authorized"})
+		return
+	}
+
 	var event models.Event
-	err := ctx.ShouldBindJSON(&event)
+	err = ctx.ShouldBindJSON(&event)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "all fields are required"})

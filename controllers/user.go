@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/alihaamedi/go-backend-events/models"
+	"github.com/alihaamedi/go-backend-events/utility"
 	"github.com/gin-gonic/gin"
 )
 
@@ -41,6 +42,11 @@ func LogIn(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 		return
 	}
+	token, err := utility.GenerateToken(user.Email, user.ID)
 
-	ctx.JSON(http.StatusOK, gin.H{"message": "login is successful"})
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "something went wrong"})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"message": "login is successful", "token": token})
 }
