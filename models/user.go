@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+
 	"github.com/alihaamedi/go-backend-events/db"
 	"github.com/alihaamedi/go-backend-events/utility"
 )
@@ -39,5 +41,21 @@ func (u *User) Save() error {
 		return err
 	}
 	u.ID = userId
+	return nil
+}
+
+func (u *User) ValidateCredentials() error {
+	query := "SELECT password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, u.Email)
+	var retrievedPassword string
+	err := row.Scan(&retrievedPassword)
+	if err != nil {
+		return errors.New("credentials is not valid")
+	}
+	passwordIsValid := utility.CheckHashedPassword(u.Password, retrievedPassword)
+
+	if !passwordIsValid {
+		return errors.New("credentials is not valid")
+	}
 	return nil
 }

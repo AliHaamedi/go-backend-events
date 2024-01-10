@@ -26,3 +26,21 @@ func SignUp(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, gin.H{"message": "user was created successfully", "data": user})
 }
+
+func LogIn(ctx *gin.Context) {
+	var user models.User
+
+	err := ctx.ShouldBindJSON(&user)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "all fields are required"})
+		return
+	}
+
+	err = user.ValidateCredentials()
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "login is successful"})
+}
