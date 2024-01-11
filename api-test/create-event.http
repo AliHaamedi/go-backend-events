@@ -1,10 +1,10 @@
 POST http://localhost:8080/events
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGV4YW1wZWwuY29tIiwiZXhwIjoxNzA0OTA2NDE0LCJ1c2VySWQiOjJ9.w_XPJATsFzL6-c7s_EOyq8x32rZVKGKRY5m6IRg9l3Y
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJleHAiOjE3MDQ5Njg3NzYsInVzZXJJZCI6MX0.Erzb5GptdGz6ar8pnZPrNljn17YJr4dCsaGhR8eMWB8
 
 
 {
-    "name":"test Evdddent333 test",
+    "name":"first events Evdddent333 test",
 	"description":"a test event description   are testie ",
 	"location":"dezful city",
 	"dateTime":"2025-01-01T15:30:40.000Z" 
