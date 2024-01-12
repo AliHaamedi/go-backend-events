@@ -21,7 +21,6 @@ func (e *Event) Save() error {
 	INSERT INTO events(name, description, location, dateTime, user_id)
 	VALUES (?, ?, ?, ?, ?)
 	`
-
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err
@@ -31,12 +30,10 @@ func (e *Event) Save() error {
 	if err != nil {
 		return err
 	}
-
 	id, err := result.LastInsertId()
 	if err != nil {
 		return err
 	}
-
 	e.ID = id
 	return nil
 }
@@ -58,7 +55,6 @@ func GetAllEvents() ([]Event, error) {
 		events = append(events, event)
 	}
 	return events, nil
-
 }
 
 func GetEventById(id int64) (*Event, error) {
@@ -69,24 +65,20 @@ func GetEventById(id int64) (*Event, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return &event, nil
 }
 
 func (e *Event) Update() error {
-
 	query := `
 	UPDATE events 
 	SET name = ?, description = ?, location = ?, dateTime = ?
 	WHERE id = ?
 	`
-
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
-
 	_, err = stmt.Exec(e.Name, e.Description, e.Location, e.DateTime, e.ID)
 	return err
 }
@@ -101,7 +93,6 @@ func (e *Event) Delete() error {
 		return err
 	}
 	defer stmt.Close()
-
 	_, err = stmt.Exec(e.ID)
 	return err
 }
@@ -113,7 +104,6 @@ func (e *Event) Register(userId int64) error {
 		return err
 	}
 	defer stmt.Close()
-
 	_, err = stmt.Exec(e.ID, userId)
 	fmt.Println(err)
 	return err
@@ -126,7 +116,6 @@ func (e *Event) UnRegister(userId int64) error {
 		return err
 	}
 	defer stmt.Close()
-
 	_, err = stmt.Exec(e.ID, userId)
 	fmt.Println(err)
 	return err

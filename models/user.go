@@ -15,28 +15,20 @@ type User struct {
 
 func (u *User) Save() error {
 	query := "INSERT INTO users(email, password) VALUES (?,?)"
-
 	stmt, err := db.DB.Prepare(query)
-
 	if err != nil {
 		return err
 	}
-
 	defer stmt.Close()
-
 	hashedPassword, err := utility.HashPassword(u.Password)
-
 	if err != nil {
 		return err
 	}
-
 	result, err := stmt.Exec(u.Email, hashedPassword)
 	if err != nil {
 		return err
 	}
-
 	userId, err := result.LastInsertId()
-
 	if err != nil {
 		return err
 	}
@@ -53,7 +45,6 @@ func (u *User) ValidateCredentials() error {
 		return errors.New("credentials is not valid")
 	}
 	passwordIsValid := utility.CheckHashedPassword(u.Password, retrievedPassword)
-
 	if !passwordIsValid {
 		return errors.New("credentials is not valid")
 	}
