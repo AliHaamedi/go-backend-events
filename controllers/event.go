@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/alihaamedi/go-backend-events/models"
@@ -111,5 +110,5 @@ func DeleteEvent(ctx *gin.Context) {
 		res.Failed500(ctx)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"message": "event deleted successfully!"})
+	res.Ok200(ctx, nil)
 }
