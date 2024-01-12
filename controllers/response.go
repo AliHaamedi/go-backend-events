@@ -40,3 +40,8 @@ func failed404(ctx *gin.Context) {
 func failed500(ctx *gin.Context) {
 	ctx.JSON(http.StatusInternalServerError, res("something went wrong", nil))
 }
+
+// StatusUnauthorized
+func NotAuthorized(ctx *gin.Context) {
+	ctx.AbortWithStatusJSON(http.StatusUnauthorized, res("not authorized", nil))
+}
