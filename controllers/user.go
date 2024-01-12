@@ -37,13 +37,13 @@ func LogIn(ctx *gin.Context) {
 
 	err = user.ValidateCredentials()
 	if err != nil {
-		failed401(ctx)
+		failed400(ctx)
 		return
 	}
 	token, err := utility.GenerateToken(user.Email, user.ID)
 
 	if err != nil {
-		failed401(ctx)
+		failed400(ctx)
 		return
 	}
 	ok200(ctx, token)

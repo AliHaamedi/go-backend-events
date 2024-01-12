@@ -26,11 +26,6 @@ func failed400(ctx *gin.Context) {
 	ctx.JSON(http.StatusBadRequest, res("bad request", nil))
 }
 
-// StatusUnauthorized
-func failed401(ctx *gin.Context) {
-	ctx.JSON(http.StatusUnauthorized, res("Unauthorized", nil))
-}
-
 // StatusForbidden
 func failed403(ctx *gin.Context) {
 	ctx.JSON(http.StatusForbidden, res("Forbidden", nil))
